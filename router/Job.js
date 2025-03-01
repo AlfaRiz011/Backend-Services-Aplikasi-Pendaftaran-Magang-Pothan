@@ -4,9 +4,13 @@ const JobController = require('../controller/JobController');
 
 router.get('/', JobController.getAllJob); 
 
+router.get('/:jobId', JobController.getJobById);
+
 router.get('/regis/:userId', JobController.getRegisJob); 
 
 router.get('/admin', JobController.getJobFull); 
+
+router.get('/all/request', JobController.getAllRequest); 
 
 router.get('/regis/verif/:regisId', JobController.getVerifRegis); 
 

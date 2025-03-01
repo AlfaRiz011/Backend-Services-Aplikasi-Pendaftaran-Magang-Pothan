@@ -29,6 +29,46 @@ exports.getJobFull = async (req, res) => {
   }
 };
 
+exports.getAllRequest = async (req, res) => {
+  try {
+    const registrasi = await RegistrasiMagang.findAll({
+      where: { status: "pending" },
+      include: [{ model: Users }, { model : Lowongan}]
+    });
+
+    return sendSuccessResponse(res, 200, 'Registrasi fetched successfully', registrasi);
+  } catch (error) {
+    console.error(error);
+    return sendErrorResponse(res, 500, "Terjadi kesalahan server", error);
+  }
+};
+
+exports.getAllJob = async (req, res) => {
+  try {
+    const jobs = await Lowongan.findAll();
+    return sendSuccessResponse(res, 200, 'Lowongan fetched successfully', jobs);
+  } catch (error) {
+    console.error(error);
+    return sendErrorResponse(res, 500, "Terjadi kesalahan server", error);
+  }
+};
+
+exports.getJobById = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const job = await Lowongan.findByPk(jobId);
+
+    if (!job) {
+      return sendErrorResponse(res, 404, "Job not found");
+    }
+
+    return sendSuccessResponse(res, 200, "Job fetched successfully", job);
+  } catch (error) {
+    console.error(error);
+    return sendErrorResponse(res, 500, "Terjadi kesalahan server", error);
+  }
+};
+
 exports.getRegisJob = async (req, res) => {
   const userId = req.params.userId;
   try {

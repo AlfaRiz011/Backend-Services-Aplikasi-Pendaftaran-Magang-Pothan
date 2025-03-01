@@ -4,6 +4,8 @@ const DocumentController = require('../controller/DocumentController');
 
 router.get('/:userId', DocumentController.getUserDokum); //GenericResponse<List<Document>>
 
+router.get('/', DocumentController.getAllDokum);
+
 router.get('/dokum/:dokumId', DocumentController.getVerifDokum); //GenericResponse<Document>
 
 router.put('/verif/dokum/:dokumId', DocumentController.verifDokum); //GenericResponse<Document>

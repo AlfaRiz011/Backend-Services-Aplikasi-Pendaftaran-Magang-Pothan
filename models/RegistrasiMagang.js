@@ -30,7 +30,7 @@ const RegistrasiMagang = sequelize.define(
       onDelete: "CASCADE",
     }, 
     status: {
-      type: DataTypes.ENUM("pending", "disetujui", "ditolak"),
+      type: DataTypes.ENUM("pending", "diterima", "ditolak"),
       defaultValue: "pending",
     },
     alasan_penolakan: {

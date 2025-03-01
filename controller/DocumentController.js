@@ -1,4 +1,5 @@
 const DokumenPeserta = require('../models/DokumenPeserta');
+const User = require('../models/Users');
 const { sendSuccessResponse, sendErrorResponse } = require('../helper/ResponseHelper');
  
 exports.getUserDokum = async (req, res) => {
@@ -14,10 +15,30 @@ exports.getUserDokum = async (req, res) => {
     }
   };
 
+
+  exports.getAllDokum = async (req, res) => { 
+    try {
+      const dokumen = await DokumenPeserta.findAll({
+        where: { status: "pending" },
+        include: {
+          model: User, 
+        } 
+      }); 
+
+      return sendSuccessResponse(res, 200, 'User Document fetched successfully', dokumen);
+    } catch (error) { 
+      return sendErrorResponse(res, 500, "Terjadi kesalahan server", error);
+    }
+  };
+
 exports.getVerifDokum = async (req, res) => {
     try {
         const dokumId = req.params.dokumId;
-        const dokumen = await DokumenPeserta.findByPk(dokumId);
+        const dokumen = await DokumenPeserta.findByPk(dokumId, {
+          include: {
+              model: User
+          }
+      });
     
         if (!dokumen) {
           return sendErrorResponse(res, 404, "Dokumen tidak ditemukan");
@@ -56,6 +77,14 @@ exports.tolakDokum = async (req, res) =>{
           return sendErrorResponse(res, 404, "Dokumen tidak ditemukan");
         }
         
+        if (dokumen.file_path) {
+          try {
+            fs.unlinkSync(dokumen.file_path);
+          } catch (err) {
+            console.error("Gagal menghapus file:", err);
+          }
+        }
+
        dokumen.status = "ditolak"; 
         await dokumen.save();
     

@@ -23,9 +23,13 @@ exports.getUser = async(req, res) => {
 exports.upload = async(req, res) => {
   try {
     const { userId } = req.params;
+    const jenis_dokumen  = req.query.jenis_dokumen;
  
     const user = await Users.findByPk(userId);
     if (!user) {
+      if (req.file) {
+        fs.unlinkSync(req.file.path);
+      }
       return sendErrorResponse(res, 404, "User tidak ditemukan");
     }
  
@@ -33,8 +37,8 @@ exports.upload = async(req, res) => {
       return sendErrorResponse(res, 400, "Tidak ada file yang diunggah");
     }
  
-    const { jenis_dokumen } = req.body;
     if (!jenis_dokumen) {
+      fs.unlinkSync(req.file.path);
       return sendErrorResponse(res, 400, "Jenis dokumen harus disediakan");
     }
  
@@ -47,6 +51,9 @@ exports.upload = async(req, res) => {
     return sendSuccessResponse(res, 200, "Upload successfully", dokumen);
   } catch (error) {
     console.error(error);
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     return sendErrorResponse(res, 500, "Terjadi kesalahan server", error);
   }
 };
