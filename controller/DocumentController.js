@@ -1,5 +1,6 @@
 const DokumenPeserta = require('../models/DokumenPeserta');
 const User = require('../models/Users');
+const fs = require('fs');
 const { sendSuccessResponse, sendErrorResponse } = require('../helper/ResponseHelper');
  
 exports.getUserDokum = async (req, res) => {

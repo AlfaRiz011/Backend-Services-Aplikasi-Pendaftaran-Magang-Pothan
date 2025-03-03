@@ -86,13 +86,13 @@ exports.getRegisJob = async (req, res) => {
 exports.getVerifRegis = async (req, res) => {
   const regisId = req.params.regisId;
   try {
-    const registrasi = await RegistrasiMagang.findAll({
-      where: { id: regisId },
+    const registrasi = await RegistrasiMagang.findByPk(regisId,{
       include: [
         { model: Users },
         { model: Lowongan }
       ]
     });
+
     if (!registrasi || registrasi.length === 0) {
       return sendErrorResponse(res, 404, "Registrasi tidak ditemukan");
     }
@@ -106,8 +106,7 @@ exports.getVerifRegis = async (req, res) => {
 exports.verifRegis = async (req, res) => {
   try {
     const regisId = req.params.regisId;
-    const registrasi = await RegistrasiMagang.findByPk({
-      where: { id: regisId },
+    const registrasi = await RegistrasiMagang.findByPk(regisId , {
       include: [
         { model: Users },
         { model: Lowongan }
@@ -118,7 +117,7 @@ exports.verifRegis = async (req, res) => {
       return sendErrorResponse(res, 404, "Registrasi tidak ditemukan");
     }
  
-    registrasi.status = "disetujui";
+    registrasi.status = "diterima";
     await registrasi.save();
  
     const user = await Users.findByPk(registrasi.user_id);
@@ -143,8 +142,7 @@ exports.tolakRegis = async (req, res) => {
   try {
     const regisId = req.params.regisId;
     const { alasan_penolakan } = req.body;
-    const registrasi = await RegistrasiMagang.findByPkfindByPk({
-      where: { id: regisId },
+    const registrasi = await RegistrasiMagang.findByPk(regisId,{
       include: [
         { model: Users },
         { model: Lowongan }
