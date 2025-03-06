@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
         if (!isMatch) {
             return sendErrorResponse(res, 401, 'Password Invalid');
         }
-
+ 
         const id = account.id
         const token = jwt.sign(
             { id, email: account.email, }

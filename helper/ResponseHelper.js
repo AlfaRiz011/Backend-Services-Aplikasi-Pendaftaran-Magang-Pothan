@@ -4,7 +4,7 @@
  * @param {number} statusCode - HTTP status code
  * @param {string} message - Response message
  * @param {Object} data - Optional response data
- */
+ */ 
 const sendSuccessResponse = (res, statusCode, message, data = null) => {
     const response = {
         status: 'success',

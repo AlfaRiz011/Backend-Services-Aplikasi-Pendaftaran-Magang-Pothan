@@ -10,7 +10,7 @@ const DokumenPeserta = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    user_id: {
+    user_id: { 
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {

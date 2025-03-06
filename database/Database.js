@@ -16,7 +16,7 @@ const connectDB = async () => {
     console.error('MySQL connection failed:', error.message);
     process.exit(1);
   }
-};
+}; 
 
 const syncDB = async () => {
   try {
