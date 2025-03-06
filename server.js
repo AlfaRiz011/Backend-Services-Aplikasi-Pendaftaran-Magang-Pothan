@@ -17,7 +17,8 @@ app.use(express.json());
 const startServer = async () => {
     try {
         await connectDB();   
- 
+        await syncDB()
+
         app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
         app.use('/api/auth', authRoutes);
         app.use('/api/user', authenticateToken, userRoutes);
